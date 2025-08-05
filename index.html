@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pinball Game</title>
+  <style>
+    body { margin: 0; overflow: hidden; }
+    #gameCanvas { background: #222; display: block; margin: 0 auto; }
+  </style>
+</head>
+<body>
+<canvas id="gameCanvas" width="600" height="800"></canvas>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
+<script>
+const { Engine, Render, Runner, World, Bodies, Body, Events, Constraint } = Matter;
+const engine = Engine.create();
+const world = engine.world;
+
+const canvas = document.getElementById('gameCanvas');
+const render = Render.create({
+  canvas: canvas,
+  engine: engine,
+  options: {
+    width: 600,
+    height: 800,
+    wireframes: false,
+    background: '#222'
+  }
+});
+
+Render.run(render);
+const runner = Runner.create();
+Runner.run(runner, engine);
+
+// Walls
+const walls = [
+  Bodies.rectangle(300, 0, 600, 20, { isStatic: true }), // top
+  Bodies.rectangle(0, 400, 20, 800, { isStatic: true }), // left
+  Bodies.rectangle(600, 400, 20, 800, { isStatic: true }), // right
+  Bodies.rectangle(300, 800, 600, 20, { isStatic: true }) // bottom (game over)
+];
+World.add(world, walls);
+
+// Ball
+const ball = Bodies.circle(300, 100, 15, { restitution: 0.9 });
+World.add(world, ball);
+
+// Flippers
+function createFlipper(x, y, isLeft) {
+  const flipper = Bodies.rectangle(x, y, 100, 20, { density: 0.004 });
+  const pivot = { x: x + (isLeft ? -40 : 40), y: y };
+  const constraint = Constraint.create({
+    bodyA: flipper,
+    pointB: pivot,
+    stiffness: 0.9,
+    length: 0
+  });
+  Body.setAngle(flipper, isLeft ? -0.5 : 0.5);
+  World.add(world, [flipper, constraint]);
+  flipper.isLeft = isLeft;
+  flipper.pivot = pivot;
+  return flipper;
+}
+
+const leftFlipper = createFlipper(230, 730, true);
+const rightFlipper = createFlipper(370, 730, false);
+
+// Controls
+document.addEventListener('keydown', event => {
+  if (event.code === 'ArrowLeft') {
+    Body.setAngularVelocity(leftFlipper, -1.5);
+  } else if (event.code === 'ArrowRight') {
+    Body.setAngularVelocity(rightFlipper, 1.5);
+  }
+});
+
+document.addEventListener('keyup', event => {
+  if (event.code === 'ArrowLeft') {
+    Body.setAngularVelocity(leftFlipper, 0.5);
+  } else if (event.code === 'ArrowRight') {
+    Body.setAngularVelocity(rightFlipper, -0.5);
+  }
+});
+
+// Keep flippers within angle limits
+Events.on(engine, 'beforeUpdate', () => {
+  const maxAngle = 0.5;
+  const minAngle = -0.5;
+  if (leftFlipper.angle < minAngle) Body.setAngle(leftFlipper, minAngle);
+  if (leftFlipper.angle > 0) Body.setAngle(leftFlipper, 0);
+  if (rightFlipper.angle > maxAngle) Body.setAngle(rightFlipper, maxAngle);
+  if (rightFlipper.angle < 0) Body.setAngle(rightFlipper, 0);
+});
+</script>
+</body>
+</html>
