@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ORB // Mega Inteligente</title>
+    <meta
+      name="description"
+      content="Um orb mega inteligente, responsivo e futurista para thebrunoricardo.github.io"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="noise"></div>
+    <main class="layout">
+      <section class="hero">
+        <p class="eyebrow">Entidade Cognitiva 01</p>
+        <h1>Um <span>orb mega inteligente</span> que conversa, reage e pensa.</h1>
+        <p class="lead">
+          Projetado para parecer uma consciência sintética: brilhante, hipnótico e sempre pronto para gerar ideias.
+        </p>
+
+        <div class="controls">
+          <button class="prompt-button active" data-prompt="strategy">Estratégia</button>
+          <button class="prompt-button" data-prompt="design">Design</button>
+          <button class="prompt-button" data-prompt="future">Futuro</button>
+          <button class="prompt-button" data-prompt="chaos">Caos bom</button>
+        </div>
+
+        <div class="response-card">
+          <div>
+            <p class="label">Diagnóstico do orb</p>
+            <p id="orb-response" class="response-text"></p>
+          </div>
+          <button id="shuffle" class="ghost-button">Nova transmissão</button>
+        </div>
+      </section>
+
+      <section class="orb-panel">
+        <div class="orb-stage">
+          <div class="halo halo-a"></div>
+          <div class="halo halo-b"></div>
+          <div class="halo halo-c"></div>
+          <div class="orb-core">
+            <div class="orb-inner"></div>
+            <div class="orb-ring orb-ring-a"></div>
+            <div class="orb-ring orb-ring-b"></div>
+            <div class="orb-ring orb-ring-c"></div>
+            <div class="orb-glow"></div>
+          </div>
+          <div class="pulse pulse-a"></div>
+          <div class="pulse pulse-b"></div>
+        </div>
+
+        <div class="telemetry">
+          <article>
+            <p class="metric">Processamento</p>
+            <strong>99.99%</strong>
+            <span>foco em ideias absurdamente boas</span>
+          </article>
+          <article>
+            <p class="metric">Intuição</p>
+            <strong>∞ camadas</strong>
+            <span>detectando padrões antes do café esfriar</span>
+          </article>
+          <article>
+            <p class="metric">Modo</p>
+            <strong id="mode-label">Estratégia expansiva</strong>
+            <span>ajustando frequência em tempo real</span>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <aside class="thought-stream">
+      <div class="thought-header">
+        <p class="label">Fluxo cognitivo</p>
+        <span class="dot"></span>
+      </div>
+      <ul id="thought-list"></ul>
+    </aside>
+
+    <script src="script.js"></script>
+  </body>
+</html>
